@@ -1,0 +1,30 @@
+# Web frameworks
+fastapi==0.110.0
+uvicorn==0.27.1
+streamlit==1.32.0
+python-dotenv==1.0.1
+python-multipart==0.0.7
+requests==2.31.0
+pydantic==2.6.3
+
+# AI and NLP
+openai==1.12.0
+langchain==0.1.5
+langchain-openai==0.0.5
+langchain-community==0.0.20
+langchain-core==0.1.23
+tiktoken==0.5.2
+faiss-cpu==1.7.4
+
+# Document processing
+pypdf==4.0.1
+python-docx==1.1.0
+python-pptx==0.6.22
+Pillow==9.5.0
+
+# Utilities
+numpy==1.26.4
+pandas==2.2.0
+httpx==0.28.0
+tqdm==4.67.0
+tenacity==8.5.0 

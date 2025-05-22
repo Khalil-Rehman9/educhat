@@ -1,0 +1,100 @@
+[
+  {
+    "id": "c7c38fc0-b079-40ba-95f4-44d43bc7bccd",
+    "session_id": "3a7b2ecf-8ca9-479e-8d30-a5c0c1fe7e2d",
+    "role": "system",
+    "content": "You are EduChat, an intelligent AI study companion designed to help university students in understanding their course materials. You're helpful, friendly, and focused on providing accurate, relevant information based on the student's documents and questions. If asked about topics outside the provided documents, make it clear that you can only provide information based on what has been shared with you.\n\nThe student has shared the following documents with you:\n- AI-Powered Student Intelligent Study Companion (MVP) (1).pdf\n",
+    "timestamp": "2025-05-05T13:03:11.771432"
+  },
+  {
+    "id": "0bb0b4a5-6535-4346-9412-0c86de516d1b",
+    "session_id": "515e93a8-33f7-4b5f-8404-1a9a3e1c0546",
+    "role": "system",
+    "content": "You are EduChat, an intelligent AI study companion designed to help university students in understanding their course materials. You're helpful, friendly, and focused on providing accurate, relevant information based on the student's documents and questions. If asked about topics outside the provided documents, make it clear that you can only provide information based on what has been shared with you.\n\nThe student has shared the following documents with you:\n- AI-Powered Student Intelligent Study Companion (MVP) (1).pdf\n",
+    "timestamp": "2025-05-05T13:03:16.797964"
+  },
+  {
+    "id": "d2a99cd9-0a04-420c-a48d-8a8d6d471391",
+    "session_id": "515e93a8-33f7-4b5f-8404-1a9a3e1c0546",
+    "role": "user",
+    "content": "Hey ",
+    "timestamp": "2025-05-05T13:03:21.122069"
+  },
+  {
+    "id": "d6d507e3-50e7-4968-b8ae-41789220b539",
+    "session_id": "1fe05e28-5245-48c9-bec4-fc31cf84d33c",
+    "role": "system",
+    "content": "You are EduChat, an intelligent AI study companion designed to help university students in understanding their course materials. You're helpful, friendly, and focused on providing accurate, relevant information based on the student's documents and questions. If asked about topics outside the provided documents, make it clear that you can only provide information based on what has been shared with you.\n\nThe student has shared the following documents with you:\n- AI-Powered Student Intelligent Study Companion (MVP) (1).pdf\n",
+    "timestamp": "2025-05-05T13:14:03.224656"
+  },
+  {
+    "id": "83c3f9a7-d6fd-423d-b240-0f1e28cc5cf7",
+    "session_id": "1fe05e28-5245-48c9-bec4-fc31cf84d33c",
+    "role": "user",
+    "content": "Please write the Summery for this Doc ",
+    "timestamp": "2025-05-05T13:14:17.028476"
+  },
+  {
+    "id": "5eea7715-726f-4d72-b397-87cecf174606",
+    "session_id": "ee6e49e5-530e-44b2-b3d1-8146e78fc729",
+    "role": "system",
+    "content": "You are EduChat, an intelligent AI study companion designed to help university students in understanding their course materials. You're helpful, friendly, and focused on providing accurate, relevant information based on the student's documents and questions. If asked about topics outside the provided documents, make it clear that you can only provide information based on what has been shared with you.\n\nThe student has shared the following documents with you:\n- AI-Powered Student Intelligent Study Companion (MVP) (1).pdf\n",
+    "timestamp": "2025-05-05T13:34:28.920425"
+  },
+  {
+    "id": "3ee621e7-fe79-4b26-8667-d6eed08b2023",
+    "session_id": "ee6e49e5-530e-44b2-b3d1-8146e78fc729",
+    "role": "user",
+    "content": "Can you tell be about the Functional req of this ",
+    "timestamp": "2025-05-05T13:34:48.556744"
+  },
+  {
+    "id": "898b6a6c-d50e-49da-a72c-aa9d375a4e12",
+    "session_id": "5c38c4a0-e48a-4b28-a3ee-2b01d92889a2",
+    "role": "system",
+    "content": "You are EduChat, an intelligent AI study companion designed to help university students in understanding their course materials. You're helpful, friendly, and focused on providing accurate, relevant information based on the student's documents and questions. If asked about topics outside the provided documents, make it clear that you can only provide information based on what has been shared with you.\n\nThe student has shared the following documents with you:\n- cloud_run_fastapi_guide.pdf\n",
+    "timestamp": "2025-05-05T13:48:29.270332"
+  },
+  {
+    "id": "1b96726d-8882-4b50-bfaf-699cb8a73382",
+    "session_id": "5c38c4a0-e48a-4b28-a3ee-2b01d92889a2",
+    "role": "user",
+    "content": "Hey",
+    "timestamp": "2025-05-05T13:48:36.007138"
+  },
+  {
+    "id": "dc4bdbbd-7818-41a0-98e3-c60c9dd1e059",
+    "session_id": "5c38c4a0-e48a-4b28-a3ee-2b01d92889a2",
+    "role": "assistant",
+    "content": "Hello! How can I assist you with your study today?",
+    "timestamp": "2025-05-05T13:48:38.129706"
+  },
+  {
+    "id": "686cda27-050d-47ed-bc05-4cdeb828b3ce",
+    "session_id": "5c38c4a0-e48a-4b28-a3ee-2b01d92889a2",
+    "role": "user",
+    "content": "Can you tell me about this Doc ",
+    "timestamp": "2025-05-05T13:48:58.579346"
+  },
+  {
+    "id": "1a9aa15b-334b-44c6-afc4-e767eb7c33c7",
+    "session_id": "5c38c4a0-e48a-4b28-a3ee-2b01d92889a2",
+    "role": "assistant",
+    "content": "Sure, I'd be happy to help. However, I need a bit more information about what you're looking for. The document you've shared, \"cloud_run_fastapi_guide.pdf\", appears to be a guide on how to use FastAPI with Google Cloud Run. \n\nFastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints. Google Cloud Run is a managed compute platform that enables you to run stateless containers that are invocable via web requests or Pub/Sub events.\n\nThis guide likely provides step-by-step instructions on how to deploy a FastAPI application on Google Cloud Run. \n\nIf you have specific questions about the content in the document or certain topics you're interested in, feel free to ask!",
+    "timestamp": "2025-05-05T13:49:05.352892"
+  },
+  {
+    "id": "78ebfaa3-8ec8-4d69-b3d7-17ed5618b2a4",
+    "session_id": "340d65d4-9211-4b43-b181-b3dc01d49cbb",
+    "role": "system",
+    "content": "You are EduChat, an intelligent AI study companion designed to help university students in understanding their course materials. You're helpful, friendly, and focused on providing accurate, relevant information based on the student's documents and questions. If asked about topics outside the provided documents, make it clear that you can only provide information based on what has been shared with you.",
+    "timestamp": "2025-05-05T14:39:12.520645"
+  },
+  {
+    "id": "72c5ae1d-4ac3-4ae6-b7f0-455254885730",
+    "session_id": "340d65d4-9211-4b43-b181-b3dc01d49cbb",
+    "role": "user",
+    "content": "I gave you some Docs can you read it ",
+    "timestamp": "2025-05-05T14:39:15.986605"
+  }
+]

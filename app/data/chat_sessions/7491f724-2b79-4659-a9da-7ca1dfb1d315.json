@@ -1,0 +1,20 @@
+{
+  "id": "7491f724-2b79-4659-a9da-7ca1dfb1d315",
+  "title": "Chat Session 2025-05-22 11:37",
+  "created_at": "2025-05-22T11:37:09.290634",
+  "document_ids": [
+    "5d85d7c0-9093-4b76-b940-2d67af772587"
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "Can you explain this Doc in more details ",
+      "timestamp": "2025-05-22T11:37:20.924345"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry, I couldn't access the documents due to the following issues: Document 'AI-Powered Student Intelligent Study Companion (MVP) (1).pdf' is not fully processed yet. Please try again later or select different documents.",
+      "timestamp": "2025-05-22T11:37:20.925269"
+    }
+  ]
+}

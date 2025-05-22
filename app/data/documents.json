@@ -1,0 +1,30 @@
+[
+  {
+    "id": "5d85d7c0-9093-4b76-b940-2d67af772587",
+    "title": "AI-Powered Student Intelligent Study Companion (MVP) (1).pdf",
+    "original_filename": "AI-Powered Student Intelligent Study Companion (MVP) (1).pdf",
+    "stored_filename": "5d85d7c0-9093-4b76-b940-2d67af772587.pdf",
+    "file_type": "pdf",
+    "file_path": "/Users/khalil/Documents/EduChat-bot/EduChat-bot/app/data/raw/5d85d7c0-9093-4b76-b940-2d67af772587.pdf",
+    "file_size": 198380,
+    "processed": false,
+    "embedding_id": null,
+    "upload_date": "2025-05-05T14:36:24.268585",
+    "status": "uploaded",
+    "last_modified": "2025-05-05T14:36:24.268585"
+  },
+  {
+    "id": "f5681117-e2a5-4341-8fc9-c3c9c2822faf",
+    "title": "Jira AI Agent - Resource Plan & Hour Estimate.pdf",
+    "original_filename": "Jira AI Agent - Resource Plan & Hour Estimate.pdf",
+    "stored_filename": "f5681117-e2a5-4341-8fc9-c3c9c2822faf.pdf",
+    "file_type": "pdf",
+    "file_path": "/Users/khalil/Documents/EduChat-bot/EduChat-bot/app/data/raw/f5681117-e2a5-4341-8fc9-c3c9c2822faf.pdf",
+    "file_size": 183142,
+    "processed": false,
+    "embedding_id": null,
+    "upload_date": "2025-05-05T14:36:24.334674",
+    "status": "uploaded",
+    "last_modified": "2025-05-05T14:36:24.334674"
+  }
+]

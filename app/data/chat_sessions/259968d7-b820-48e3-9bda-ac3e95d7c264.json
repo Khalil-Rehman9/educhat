@@ -1,0 +1,20 @@
+{
+  "id": "259968d7-b820-48e3-9bda-ac3e95d7c264",
+  "title": "Chat Session 2025-05-22 11:33",
+  "created_at": "2025-05-22T11:33:14.263404",
+  "document_ids": [
+    "5d85d7c0-9093-4b76-b940-2d67af772587"
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "What are the main points in this ",
+      "timestamp": "2025-05-22T11:33:30.771158"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry, I couldn't access the documents. Please try again later.",
+      "timestamp": "2025-05-22T11:33:30.771558"
+    }
+  ]
+}
