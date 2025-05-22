@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}EduChat - Chat{% endblock %}
+
+{% block sidebar_content %}
+<div class="sidebar-section">
+    <h3>Chat Mode</h3>
+    <div class="form-group">
+        <select id="chat-mode" class="form-control">
+            <option value="standard" {% if chat_mode == 'standard' %}selected{% endif %}>Standard</option>
+            <option value="eli5" {% if chat_mode == 'eli5' %}selected{% endif %}>Explain Like I'm 5</option>
+        </select>
+    </div>
+    
+    <button id="clear-chat" class="btn btn-outline btn-block">
+        <i class="fas fa-broom"></i> Clear Chat History
+    </button>
+</div>
+
+{% if selected_documents %}
+<div class="sidebar-section mt-2">
+    <h3>Selected Documents</h3>
+    <ul class="selected-docs-list">
+        {% for doc in selected_documents %}
+        <li>
+            <i class="fas fa-file"></i> {{ doc.title }}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="/documents" class="btn btn-outline btn-block mt-1">
+        <i class="fas fa-edit"></i> Change Selection
+    </a>
+</div>
+{% else %}
+<div class="sidebar-section mt-2">
+    <div class="alert alert-info">
+        No documents selected. Go to the Documents page to select documents for chat.
+    </div>
+    <a href="/documents" class="btn btn-outline btn-block">
+        <i class="fas fa-book"></i> Browse Documents
+    </a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div id="alerts-container"></div>
+
+<div class="content-header">
+    <h1><i class="fas fa-comment"></i> Chat with EduChat</h1>
+    {% if selected_documents %}
+    <p>Currently discussing: {{ selected_documents|length }} document(s)</p>
+    {% endif %}
+</div>
+
+<div class="chat-container" id="chat-messages">
+    {% if chat_history %}
+        {% for message in chat_history %}
+            <div class="chat-message {{ message.role }}-message">
+                <div class="message-content">{{ message.content }}</div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="chat-welcome">
+            <h2>Welcome to EduChat!</h2>
+            <p>Ask questions about your documents or start a conversation.</p>
+        </div>
+    {% endif %}
+</div>
+
+<form id="chat-form" class="chat-input-container">
+    <input type="hidden" id="session-id" value="{{ session_id }}">
+    <input type="text" id="message-input" class="chat-input" placeholder="Type your message here..." autocomplete="off">
+    <button type="submit" class="send-button">
+        <i class="fas fa-paper-plane"></i>
+    </button>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Clear chat button functionality
+        const clearChatBtn = document.getElementById('clear-chat');
+        if (clearChatBtn) {
+            clearChatBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear the chat history?')) {
+                    // Clear chat history
+                    document.getElementById('chat-messages').innerHTML = `
+                        <div class="chat-welcome">
+                            <h2>Welcome to EduChat!</h2>
+                            <p>Ask questions about your documents or start a conversation.</p>
+                        </div>
+                    `;
+                    
+                    // Clear session ID
+                    document.getElementById('session-id').value = '';
+                    
+                    // Show confirmation
+                    showAlert('Chat history cleared', 'info');
+                }
+            });
+        }
+        
+        // Scroll chat to bottom on load
+        scrollChatToBottom();
+    });
+</script>
+{% endblock %} 

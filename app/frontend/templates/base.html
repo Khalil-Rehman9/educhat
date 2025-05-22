@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EduChat{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://img.icons8.com/color/96/000000/student-center.png" alt="EduChat Logo" class="logo">
+                <h1 class="app-title">EduChat</h1>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/" class="nav-link {% if active_tab == 'chat' %}active{% endif %}">
+                        <i class="fas fa-comment"></i> Chat
+                    </a></li>
+                    <li><a href="/documents" class="nav-link {% if active_tab == 'documents' %}active{% endif %}">
+                        <i class="fas fa-book"></i> Documents
+                    </a></li>
+                    <li><a href="/quiz" class="nav-link {% if active_tab == 'quiz' %}active{% endif %}">
+                        <i class="fas fa-question"></i> Quiz
+                    </a></li>
+                </ul>
+            </nav>
+            
+            {% block sidebar_content %}{% endblock %}
+        </aside>
+        
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <script src="{{ url_for('static', path='/js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

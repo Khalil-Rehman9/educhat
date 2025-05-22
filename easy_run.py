@@ -56,7 +56,7 @@ def main():
     # Start frontend in a separate thread
     frontend_thread = threading.Thread(
         target=run_command,
-        args=(["streamlit", "run", "app/frontend/main.py"], "FRONTEND"),
+        args=(["uvicorn", "app.frontend.main:app", "--host", "0.0.0.0", "--port", "8501", "--reload"], "FRONTEND"),
         daemon=True
     )
     

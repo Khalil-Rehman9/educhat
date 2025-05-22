@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}EduChat - Documents{% endblock %}
+
+{% block content %}
+<div id="alerts-container"></div>
+
+<div class="content-header">
+    <h1><i class="fas fa-book"></i> Document Library</h1>
+    <button class="btn btn-primary" id="upload-toggle">
+        <i class="fas fa-upload"></i> Upload New Document
+    </button>
+</div>
+
+<div id="upload-section" class="card" style="display: none;">
+    <div class="card-header">
+        <h2 class="card-title">Upload New Document</h2>
+    </div>
+    <div class="card-body">
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file-input" class="form-label">Select File</label>
+                <input type="file" id="file-input" class="form-control" accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg">
+                <small class="form-text">Supported formats: PDF, DOCX, PPTX, PNG, JPG</small>
+            </div>
+            
+            <div class="grid grid-2 gap-2">
+                <div class="form-group">
+                    <label for="title-input" class="form-label">Title (Optional)</label>
+                    <input type="text" id="title-input" class="form-control" placeholder="Document title">
+                </div>
+                
+                <div class="form-group">
+                    <label for="category-input" class="form-label">Category (Optional)</label>
+                    <select id="category-input" class="form-control">
+                        <option value="">-- No Category --</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                        <option value="new">+ Add New Category</option>
+                    </select>
+                    <div id="new-category-container" style="display: none;" class="mt-1">
+                        <input type="text" id="new-category" class="form-control" placeholder="New category name">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> Upload Document
+                </button>
+                <button type="button" class="btn btn-outline ml-1" id="cancel-upload">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-2">
+    <div class="card-header">
+        <h2 class="card-title">Library Statistics</h2>
+    </div>
+    <div class="card-body">
+        <div class="grid grid-2 gap-2">
+            <div class="stat-item">
+                <h3>Total Documents</h3>
+                <div class="stat-value">{{ documents|length }}</div>
+            </div>
+            <div class="stat-item">
+                <h3>Document Types</h3>
+                <div class="stat-value">
+                    {% for type, count in document_types.items() %}
+                    <span class="badge">{{ count }} {{ type }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-2">
+    <div class="card-header flex flex-between items-center">
+        <h2 class="card-title">Documents</h2>
+        <div class="filter-controls">
+            <input type="text" id="search-input" class="form-control" placeholder="Search by title...">
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="document-actions mb-2">
+            <div class="flex items-center">
+                <input type="checkbox" id="select-all-docs">
+                <label for="select-all-docs" class="ml-1">Select All</label>
+            </div>
+            
+            <div id="batch-actions" style="display: none;">
+                <button id="start-chat-btn" class="btn btn-primary">
+                    <i class="fas fa-comment"></i> Start Chat with Selected
+                </button>
+                <button id="create-quiz-btn" class="btn btn-info ml-1">
+                    <i class="fas fa-question"></i> Create Quiz from Selected
+                </button>
+            </div>
+        </div>
+        
+        <div id="document-list">
+            {% if documents %}
+                {% set categories = {} %}
+                {% for doc in documents %}
+                    {% if doc.category %}
+                        {% if doc.category in categories %}
+                            {% set _ = categories.update({doc.category: categories[doc.category] + [doc]}) %}
+                        {% else %}
+                            {% set _ = categories.update({doc.category: [doc]}) %}
+                        {% endif %}
+                    {% else %}
+                        {% if 'Uncategorized' in categories %}
+                            {% set _ = categories.update({'Uncategorized': categories['Uncategorized'] + [doc]}) %}
+                        {% else %}
+                            {% set _ = categories.update({'Uncategorized': [doc]}) %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                
+                {% for category, docs in categories.items() %}
+                <div class="category-section mb-2">
+                    <h3>{{ category }}</h3>
+                    <div class="document-list">
+                        {% for doc in docs %}
+                        <div class="document-card" data-id="{{ doc.id }}" data-title="{{ doc.title or doc.original_filename }}">
+                            <div class="document-title">
+                                {% if doc.file_type == 'pdf' %}
+                                <i class="fas fa-file-pdf"></i>
+                                {% elif doc.file_type in ['docx', 'doc'] %}
+                                <i class="fas fa-file-word"></i>
+                                {% elif doc.file_type in ['pptx', 'ppt'] %}
+                                <i class="fas fa-file-powerpoint"></i>
+                                {% elif doc.file_type in ['jpg', 'jpeg', 'png'] %}
+                                <i class="fas fa-file-image"></i>
+                                {% else %}
+                                <i class="fas fa-file"></i>
+                                {% endif %}
+                                {{ doc.title or doc.original_filename or 'Untitled' }}
+                            </div>
+                            
+                            <div class="document-meta">
+                                Type: {{ doc.file_type|upper }} | Uploaded: {{ doc.upload_date|datetime }}
+                            </div>
+                            
+                            <div class="document-selection">
+                                <input type="checkbox" class="document-checkbox" id="doc-{{ doc.id }}" value="{{ doc.id }}" 
+                                    {% if doc.id in selected_documents %}checked{% endif %}>
+                                <label for="doc-{{ doc.id }}">Select for chat</label>
+                            </div>
+                            
+                            <div class="document-actions">
+                                <button class="btn btn-info btn-sm summary-btn" data-id="{{ doc.id }}">
+                                    <i class="fas fa-file-alt"></i> Summary
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="{{ doc.id }}" 
+                                    data-title="{{ doc.title or doc.original_filename }}">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">
+                    No documents uploaded yet. Use the upload button to add documents.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Upload section toggle
+        const uploadToggle = document.getElementById('upload-toggle');
+        const uploadSection = document.getElementById('upload-section');
+        const cancelUpload = document.getElementById('cancel-upload');
+        
+        uploadToggle.addEventListener('click', function() {
+            uploadSection.style.display = 'block';
+            uploadToggle.style.display = 'none';
+        });
+        
+        cancelUpload.addEventListener('click', function() {
+            uploadSection.style.display = 'none';
+            uploadToggle.style.display = 'inline-block';
+        });
+        
+        // Category selection
+        const categorySelect = document.getElementById('category-input');
+        const newCategoryContainer = document.getElementById('new-category-container');
+        
+        categorySelect.addEventListener('change', function() {
+            if (this.value === 'new') {
+                newCategoryContainer.style.display = 'block';
+            } else {
+                newCategoryContainer.style.display = 'none';
+            }
+        });
+        
+        // Document selection handling
+        const documentCheckboxes = document.querySelectorAll('.document-checkbox');
+        const batchActions = document.getElementById('batch-actions');
+        
+        function updateBatchActions() {
+            const selectedCount = document.querySelectorAll('.document-checkbox:checked').length;
+            batchActions.style.display = selectedCount > 0 ? 'block' : 'none';
+        }
+        
+        documentCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateBatchActions);
+        });
+        
+        // Initial check
+        updateBatchActions();
+        
+        // Start chat with selected documents
+        const startChatBtn = document.getElementById('start-chat-btn');
+        if (startChatBtn) {
+            startChatBtn.addEventListener('click', function() {
+                const selectedDocs = Array.from(document.querySelectorAll('.document-checkbox:checked'))
+                    .map(cb => cb.value);
+                
+                if (selectedDocs.length === 0) {
+                    showAlert('Please select at least one document', 'warning');
+                    return;
+                }
+                
+                // Store selected documents in localStorage and redirect to chat
+                localStorage.setItem('selected_documents', JSON.stringify(selectedDocs));
+                window.location.href = '/';
+            });
+        }
+        
+        // Create quiz with selected documents
+        const createQuizBtn = document.getElementById('create-quiz-btn');
+        if (createQuizBtn) {
+            createQuizBtn.addEventListener('click', function() {
+                const selectedDocs = Array.from(document.querySelectorAll('.document-checkbox:checked'))
+                    .map(cb => cb.value);
+                
+                if (selectedDocs.length === 0) {
+                    showAlert('Please select at least one document', 'warning');
+                    return;
+                }
+                
+                // Store selected documents in localStorage and redirect to quiz
+                localStorage.setItem('selected_documents', JSON.stringify(selectedDocs));
+                window.location.href = '/quiz';
+            });
+        }
+        
+        // Document search functionality
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const documentCards = document.querySelectorAll('.document-card');
+                
+                documentCards.forEach(card => {
+                    const title = card.getAttribute('data-title').toLowerCase();
+                    if (title.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Check if any cards are visible in each category
+                document.querySelectorAll('.category-section').forEach(section => {
+                    const visibleCards = section.querySelectorAll('.document-card[style="display: flex;"]').length;
+                    section.style.display = visibleCards > 0 ? 'block' : 'none';
+                });
+            });
+        }
+        
+        // Summary button functionality
+        document.querySelectorAll('.summary-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const docId = this.getAttribute('data-id');
+                getDocumentSummary(docId);
+            });
+        });
+        
+        // Delete button functionality
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const docId = this.getAttribute('data-id');
+                const docTitle = this.getAttribute('data-title');
+                deleteDocument(docId, docTitle);
+            });
+        });
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}EduChat - Quiz{% endblock %}
+
+{% block content %}
+<div id="alerts-container"></div>
+
+<div class="content-header">
+    <h1><i class="fas fa-question"></i> Quiz Generator</h1>
+    <p>Generate quizzes based on your uploaded documents to test your understanding.</p>
+</div>
+
+<div class="quiz-page-layout">
+    <div class="quiz-sidebar">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Quiz Settings</h2>
+            </div>
+            <div class="card-body">
+                <form id="quiz-form">
+                    <div class="form-group">
+                        <h3>Step 1: Select Documents</h3>
+                        
+                        {% if selected_documents %}
+                        <div class="form-check">
+                            <input type="checkbox" id="use-selected" checked>
+                            <label for="use-selected">Use documents selected in Library</label>
+                        </div>
+                        
+                        <div id="selected-docs-list" class="mt-1">
+                            <ul>
+                                {% for doc in selected_documents %}
+                                <li>{{ doc.title or doc.original_filename }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <div id="document-selection" class="mt-1" {% if selected_documents %}style="display: none;"{% endif %}>
+                            {% if documents %}
+                                {% for doc in documents %}
+                                <div class="form-check">
+                                    <input type="checkbox" class="quiz-document-checkbox" id="quiz-doc-{{ doc.id }}" value="{{ doc.id }}">
+                                    <label for="quiz-doc-{{ doc.id }}">{{ doc.title or doc.original_filename }}</label>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="alert alert-info">
+                                    No documents available. Please upload documents first.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-2">
+                        <h3>Step 2: Configure Quiz</h3>
+                        
+                        <div class="form-group">
+                            <label>Quiz Type:</label>
+                            <div class="form-check">
+                                <input type="radio" name="quiz-type" id="general-quiz" value="general" checked>
+                                <label for="general-quiz">General Quiz</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="quiz-type" id="topic-quiz" value="topic">
+                                <label for="topic-quiz">Topic-Specific Quiz</label>
+                            </div>
+                        </div>
+                        
+                        <div id="topic-input-container" class="form-group" style="display: none;">
+                            <label for="topic-input" class="form-label">Topic:</label>
+                            <input type="text" id="topic-input" class="form-control" placeholder="Enter specific topic">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="difficulty" class="form-label">Difficulty:</label>
+                            <select id="difficulty" class="form-control">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="num-questions" class="form-label">Number of Questions:</label>
+                            <input type="range" id="num-questions" class="form-control" min="1" max="10" value="5">
+                            <div class="range-value"><span id="question-count">5</span> questions</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Question Types:</label>
+                            <div class="form-check">
+                                <input type="checkbox" name="question-type" id="multiple-choice" value="multiple_choice" checked>
+                                <label for="multiple-choice">Multiple Choice</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="question-type" id="true-false" value="true_false" checked>
+                                <label for="true-false">True/False</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="question-type" id="short-answer" value="short_answer">
+                                <label for="short-answer">Short Answer</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mt-2">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-play"></i> Generate Quiz
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="quiz-content">
+        <div id="quiz-container" class="quiz-container">
+            {% if not quiz_data %}
+                <div class="quiz-placeholder">
+                    <div class="text-center">
+                        <i class="fas fa-question-circle fa-5x"></i>
+                        <h2 class="mt-2">Quiz will appear here</h2>
+                        <p>Configure your quiz settings and click "Generate Quiz" to start.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .quiz-page-layout {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .quiz-sidebar {
+        width: 350px;
+        flex-shrink: 0;
+    }
+    
+    .quiz-content {
+        flex: 1;
+    }
+    
+    .range-value {
+        text-align: center;
+        margin-top: 5px;
+    }
+    
+    .quiz-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 400px;
+        background-color: var(--secondary-color);
+        border-radius: var(--border-radius);
+        color: var(--light-text);
+    }
+    
+    @media (max-width: 768px) {
+        .quiz-page-layout {
+            flex-direction: column;
+        }
+        
+        .quiz-sidebar {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Quiz type selection
+        const topicQuizRadio = document.getElementById('topic-quiz');
+        const generalQuizRadio = document.getElementById('general-quiz');
+        const topicInputContainer = document.getElementById('topic-input-container');
+        
+        topicQuizRadio.addEventListener('change', function() {
+            if (this.checked) {
+                topicInputContainer.style.display = 'block';
+            }
+        });
+        
+        generalQuizRadio.addEventListener('change', function() {
+            if (this.checked) {
+                topicInputContainer.style.display = 'none';
+            }
+        });
+        
+        // Number of questions range
+        const numQuestionsRange = document.getElementById('num-questions');
+        const questionCount = document.getElementById('question-count');
+        
+        numQuestionsRange.addEventListener('input', function() {
+            questionCount.textContent = this.value;
+        });
+        
+        // Toggle document selection
+        const useSelectedCheckbox = document.getElementById('use-selected');
+        const documentSelection = document.getElementById('document-selection');
+        const selectedDocsList = document.getElementById('selected-docs-list');
+        
+        if (useSelectedCheckbox) {
+            useSelectedCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    documentSelection.style.display = 'none';
+                    selectedDocsList.style.display = 'block';
+                } else {
+                    documentSelection.style.display = 'block';
+                    selectedDocsList.style.display = 'none';
+                }
+            });
+        }
+        
+        // Question type validation
+        const questionTypeCheckboxes = document.querySelectorAll('input[name="question-type"]');
+        questionTypeCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const anyChecked = Array.from(questionTypeCheckboxes).some(cb => cb.checked);
+                if (!anyChecked) {
+                    this.checked = true;
+                    showAlert('At least one question type must be selected', 'warning');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 

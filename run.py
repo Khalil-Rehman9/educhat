@@ -37,10 +37,10 @@ def start_backend():
     return backend_process
 
 def start_frontend():
-    """Start the Streamlit frontend."""
-    print("Starting Streamlit frontend...")
+    """Start the FastAPI frontend."""
+    print("Starting FastAPI frontend...")
     frontend_process = subprocess.Popen(
-        ["streamlit", "run", "app/frontend/main.py"],
+        ["uvicorn", "app.frontend.main:app", "--host", "0.0.0.0", "--port", "8501", "--reload"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True
@@ -50,17 +50,17 @@ def start_frontend():
     # Check if the process is still running
     if frontend_process.poll() is not None:
         stderr = frontend_process.stderr.read()
-        print(f"Error starting Streamlit frontend: {stderr}")
+        print(f"Error starting FastAPI frontend: {stderr}")
         sys.exit(1)
     
-    print("Streamlit frontend started successfully!")
+    print("FastAPI frontend started successfully!")
     return frontend_process
 
 def parse_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description="Run EduChat application")
     parser.add_argument("--backend-only", action="store_true", help="Start only the backend server")
-    parser.add_argument("--frontend-only", action="store_true", help="Start only the Streamlit frontend")
+    parser.add_argument("--frontend-only", action="store_true", help="Start only the FastAPI frontend")
     
     return parser.parse_args()
 
